@@ -1,0 +1,341 @@
+<!-- Projets Component HTML -->
+<div class="page-header">
+  <h3 class="page-title"> Tous les projets
+  </h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Tables</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Projets</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <button style="float: right;background-color:#059BCE" class="btn " data-bs-toggle="modal" [attr.data-bs-target]="'#addModal'">
+          <i class="fa-solid fa-users"></i>Ajouter Projet</button>
+
+        <h4 class="card-title">Tableau des projets
+        </h4>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 25%;"> Titre</th>
+                <th style="width: 12%;" class="text-center"> Description </th>
+                <th style="width: 12%;" class="text-center"> Equipe </th>
+                <th style="width: 12%;" class="text-center"> Date Debut </th>
+                <th style="width: 12%;" class="text-center"> Date Fin </th>
+                <th style="width: 12%;" class="text-center"> Environnement </th>
+                <th style="width: 15%;" class="text-center"> Actions </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataArray; index as i">
+                <td class="py-1">{{ item.titre }}</td>
+                <td class="text-center">{{ item.description }}</td>
+                <td class="text-center">{{ item.equipeTitle }}</td>
+                <td class="text-center">{{ item.dateDebut | date: 'yyyy-MM-dd' }}</td>
+                <td class="text-center">{{ item.dateFin | date: 'yyyy-MM-dd' }}</td>
+                <td class="text-center">{{ item.environnementTitle }}</td>
+
+                <td class="text-center">
+                  <button class="btn btn-warning col-3" data-bs-toggle="modal" [attr.data-bs-target]="'#updateModal'+ i">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button class="btn btn-danger col-3 ms-1" data-bs-toggle="modal" [attr.data-bs-target]="'#deleteModal'+ i">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                  <button class="btn btn-secondary col-3 ms-1" [routerLink]="['/employee/projet/tickets',item._id]">
+                    <i class="fa-solid fa-book-open"></i>
+                  </button>
+                </td>
+
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Update Modals for each project -->
+<div *ngFor="let item of dataArray; let i = index">
+  <div class="modal fade modal-full" [id]="'updateModal' + i" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateModalLabel">Modifier Project</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm">
+            <div class="form-group">
+              <label for="titre">Titre</label>
+              <input type="text" class="form-control" id="titre" name="titre" [(ngModel)]="item.titre" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" class="form-control" id="description" name="description" [(ngModel)]="item.description" required>
+            </div>
+            <div class="form-group">
+              <label for="equipe">Equipe</label>
+              <select class="form-control" id="equipe" name="equipe" [(ngModel)]="item.equipe" required>
+                <option *ngFor="let equipe of equipes" [value]="equipe.titre">{{ equipe.titre }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="dateDebut">Date Debut</label>
+              <input type="date" class="form-control" id="dateDebut" name="dateDebut" [(ngModel)]="item.dateDebut" required>
+            </div>
+            <div class="form-group">
+              <label for="dateFin">Date Fin</label>
+              <input type="date" class="form-control" id="dateFin" name="dateFin" [(ngModel)]="item.dateFin" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="onUpdate(updateForm, item._id, i)">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modals for each project -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade modal-full" [id]="'deleteModal' + i" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Êtes-vous sûr de vouloir supprimer ce projet ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" (click)="onDelete(item._id, i)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Modal -->
+<div class="modal fade modal-full" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Ajouter Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #createForm="ngForm" (ngSubmit)="createProject(createForm)">
+          <div class="form-group">
+            <label for="titre">Titre</label>
+            <input type="text" class="form-control" id="titre" name="titre" [(ngModel)]="newProject.titre" required>
+          </div>
+          <div class="form-group">
+            <label for="equipe">Equipe</label>
+            <select class="form-control" id="equipe" name="equipe" [(ngModel)]="newProject.equipe" required>
+              <option *ngFor="let equipe of equipes" [value]="equipe.titre">{{ equipe.titre }}</option>
+            </select>
+
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description" [(ngModel)]="newProject.description" required>
+          </div>
+          <div class="form-group">
+            <label for="priorite">priorite</label>
+            <input type="text" class="form-control" id="priorite" name="priorite" [(ngModel)]="newProject.priorite" required>
+          </div>
+          <div class="form-group">
+            <label for="statut">statut</label>
+            <input type="text" class="form-control" id="statut" name="statut" [(ngModel)]="newProject.statut" required>
+          </div>
+          <div class="form-group">
+            <label for="avancement">avancement</label>
+            <input type="text" class="form-control" id="avancement" name="avancement" [(ngModel)]="newProject.avancement" required>
+          </div>
+
+          <div class="form-group">
+            <label for="dateDebut">Date Debut</label>
+            <input type="date" class="form-control" id="dateDebut" name="dateDebut" [(ngModel)]="newProject.dateDebut" required>
+          </div>
+          <div class="form-group">
+            <label for="dateFin">Date Fin</label>
+            <input type="date" class="form-control" id="dateFin" name="dateFin" [(ngModel)]="newProject.dateFin" required>
+          </div>
+
+
+          <button type="submit" class="btn btn-primary">créer</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tickets Modals for each project -->
+<div *ngFor="let item of dataArray; let i = index">
+  <div class="modal fade modal-fulll" [id]="'openTicket' + i" tabindex="-1" aria-labelledby="openTicketLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="openTicketLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="height: calc(100vh - 100px); border-radius: 10px; overflow: hidden;">
+            <div class="col" style="width: 20%;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-center card-title-custom1">Non Commencé</h5>
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Content for Non Commencé -->
+                          <div class="modal-body">
+                            <div class="row" style="margin-left:-50px;margin-right:-50px">
+                              <div class="col" *ngFor="let ticket of dataArray[i]?.tickets" >
+                                <input class="form-control" type="text" [value]="tickets" aria-label="readonly input example" readonly style="background-color: #f8f9fa;">
+                              </div>
+                            </div>
+                            <!-- Add more input fields here as needed -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col" style="width: 20%;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-center card-title-custom2">En Cours</h5>
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Content for En Cours -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col" style="width: 20%;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-center card-title-custom3">À Risque</h5>
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Content for À Risque -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col" style="width: 20%;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-center card-title-custom4">En Dépassement</h5>
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Content for En Dépassement -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col" style="width: 20%;">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title text-center card-title-custom5">Complété</h5>
+                  <div class="row">
+                    <div class="col">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Content for Complété -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="fa-solid fa-folder-plus"></i>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- Modal Content -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

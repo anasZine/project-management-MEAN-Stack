@@ -1,0 +1,295 @@
+<div class="page-header">
+  <h3 class="page-title"> Tous les environnements </h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Tables</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Environnements</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body" >
+        <button style="float: right;background-color:#059BCE" class="btn " data-bs-toggle="modal" [attr.data-bs-target]="'#addModal'">
+          <i class="fa-solid fa-users"></i>Ajouter Environnement</button>
+
+        <h4 class="card-title">Tableau des environnements</h4>
+
+        <div class="table-responsive">
+          <table class="table ">
+            <thead>
+              <tr>
+                <th style="width: 15%;"> Titre</th>
+                <th style="width: 15%;"> système opérateur</th>
+                <th style="width: 15%;"> Description</th>
+                <th style="width: 15%;"> AdresseIP</th>
+
+                <th style="width: 15%;" class="text-center">mettre Environnement à Projet</th>
+             <th style="width: 10%;" class="text-center">Details Environnements</th>
+                <th style="width: 10%;" class="text-center">Modifier Environnements</th>
+                <th style="width: 10%;" class="text-center">Supprimer Environnements</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataArray; index as i ">
+                <td class="py-1">{{ item.titre }}</td>
+                <td class="py-1">{{ item.type }}</td>
+                <td class="py-1">{{ item.description }}</td>
+                <td class="py-1">{{ item.adresseIP }}</td>
+
+                 <td class="text-center">
+                  <button class="btn  col-3" style="background-color: #63b3ed;" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#asgModal' + i">
+                    <i class="fa-regular fa-hand-pointer"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-success col-3" data-bs-toggle="modal" [attr.data-bs-target]="'#infoModal'+ i"
+                    (click)="getEnvironnementDetails(item._id)">
+                    <i class="fa-regular fa-file"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-warning col-3" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#updateModal'+ i">
+                    <i class="fa-solid fa-marker"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-danger col-3" data-bs-toggle="modal" [attr.data-bs-target]="'#deleteModal'+ i">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- asign equipe to user modal -->
+<!-- Asign equipe to user modal -->
+ <div *ngFor="let item of dataArray; let i = index" class="modal fade" [id]="'asgModal' + i" tabindex="-1" aria-labelledby="asgModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Assigner une Environnement à Projet</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Assigner une Environnement à Projet</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+
+            <form #assignEquipeForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Identifiant de Projet</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]="projetId" name="projetId" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Identifiant de Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]="item._id" name="environnementId" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
+        <button type="button" class="btn btn-info" (click)="assignEnvironnementToProjet(assignEquipeForm, projetId, item._id, i)">Assigner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modals for each Environnement -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'infoModal' + i" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel">Informations</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Environnements Informations</p>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Nom D'Environnement</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="EnvironnementInfo?.titre" aria-label="readonly input example"
+                readonly>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">système opérateur D'Environnement</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="EnvironnementInfo?.type" aria-label="readonly input example"
+                readonly>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Description D'Environnement</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="EnvironnementInfo?.description" aria-label="readonly input example"
+                readonly>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">adresseIP D'Environnement</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="EnvironnementInfo?.adresseIP" aria-label="readonly input example"
+                readonly>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update Environnement modal -->
+<!-- update Environnement modal -->
+<div *ngFor="let item of dataArray; let i = index" class="modal fade" [id]="'updateModal' + i" tabindex="-1"
+  aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Informations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Environnement Informations</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <!-- Ajoutez une référence locale au formulaire avec #modifierEnvironnementForm -->
+            <form #modifierEnvironnementForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Nom D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="item.titre" name="titre" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">système opérateur D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="item.type" name="type" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Description D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="item.description" name="description" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">AdresseIP D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="item.adresseIP" name="adresseIP" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <!-- Utilisez modifierEnvironnementForm comme argument dans modifierEnvironnement -->
+        <button type="button" class="btn btn-info"
+          (click)="modifierEnvironnement(modifierEnvironnementForm, item._id, i)">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Delete Modals for each Environnement -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'deleteModal' + i" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Êtes-vous sûr de vouloir supprimer cet Environnement ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" (click)="deleteEnvironnement(item._id, i)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- add Environnement modal -->
+<!-- add Environnement modal -->
+<!-- add Environnement modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Ajouter Environnement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Environnement Informations</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <!-- Add a local reference to the form with #addEnvironnementForm -->
+            <form #addEnvironnementForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Nom D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="newEnvironnementTitre" name="titre" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">système opérateur D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="newEnvironnementType" name="type" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Description D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="newEnvironnementDescription" name="description" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">AdresseIP D'Environnement</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="newEnvironnementAdresseIP" name="adresseIP" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <!-- Use addEnvironnementForm as an argument in addEnvironnement method -->
+        <button type="button" class="btn btn-info" (click)="addEnvironnement(addEnvironnementForm)">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>

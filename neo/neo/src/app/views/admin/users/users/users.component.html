@@ -1,0 +1,187 @@
+
+
+<div class="page-header">
+  <h3 class="page-title"> Tous les utilisateurs
+  </h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Tables</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Utilisateur</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Tableau des utilisateurs</h4>
+
+        <div class="table-responsive">
+          <table class="table ">
+            <thead>
+              <tr >
+                <th> Nom</th>
+                <th> Prenom </th>
+                <th> Email </th>
+                <th> Statut </th>
+                <th> Profil </th>
+                <th> Equipe </th>
+                <th> Previlage </th>
+                <th> Activer/Desactiver </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataArray; index as i" >
+                <td class="py-1">{{ item.nom }}</td>
+                <td>{{ item.prenom }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.statut }}</td>
+                <td>{{ item.profil_id }}</td>
+                <td>{{ item.equipe_id }}</td>
+                <td>{{ item.privilage_id }}</td>
+                <td>
+                  <button class="btn btn-info col-10" data-bs-toggle="modal" [attr.data-bs-target]="'#exampleModal' + i" >
+                    {{ item.active ? 'Activer' : 'Desactiver' }}
+                  </button>
+                </td>
+                <td>
+                  <button class="btn  btn-success col-10" data-bs-toggle="modal" [attr.data-bs-target]="'#infoModal'+ i"  (click)="getUserDetails(item._id)">
+                    <i class="fa-regular fa-file"></i>
+                  </button>
+                </td>
+                <td>
+                  <button class="btn  btn-danger col-10" data-bs-toggle="modal" [attr.data-bs-target]="'#deleteModal'+ i"  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals for each user -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'exampleModal' + i" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          {{ item.active ? 'Êtes-vous sûr de vouloir desactiver ce compte ?' : 'Êtes-vous sûr de vouloir activer ce compte ?' }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-primary" *ngIf="item.active"  (click)="deactivateUser(item._id, i)">Desactiver</button>
+          <button type="button" class="btn btn-primary" *ngIf="!item.active"  (click)="activateUser(item._id, i)">Activer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- info user  modal-->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'infoModal' + i" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="infoModalLabel">Informations</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Informations utilisateur
+
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Nom</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.nom" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Prenom</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.prenom" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.email" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Statut</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.statut" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Profil</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.profil_id" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Equipe</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="userInfo?.equipe_id" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Activer or Desactiver</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text"  [value]="userInfo?.active ? 'Activer' : 'Desactiver'" aria-label="readonly input example" readonly>
+            </div>
+          </div>
+
+
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modals for each user -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'deleteModal' + i" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Êtes-vous sûr de vouloir supprimer cet utilisateur ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" (click)="deleteUser(item._id, i)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

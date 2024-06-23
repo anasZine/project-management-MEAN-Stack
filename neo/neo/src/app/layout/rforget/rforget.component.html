@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="../../../assets/css/style.css">
+
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper full-page-wrapper">
+        <div class="row w-100 m-0">
+          <div class="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+            <div class="card col-lg-4 mx-auto">
+              <div class="card-body px-5 py-5">
+                <h3 class="card-title text-left mb-3">Reset Your Password </h3>
+                <span class="mb-4">
+                  Please use strong password
+                </span>
+                <form [formGroup]="resetForm">
+                  <div class="form-group">
+                    <label> Password </label>
+                    <input formControlName="password" type="text" class="form-control p_input input-white-color" name="email" >
+                  </div>
+                  <div class="form-group">
+                    <label> confirm Password </label>
+                    <input formControlName="confirmPassword" type="text" class="form-control p_input input-white-color" name="email" >
+                  </div>
+                  <div class="text-center">
+                    <div class="mt-2">
+                      <button (click)="reset()" [disabled]="resetForm.invalid" [class.disabled]="resetForm.invalid" class="btn btn-success w-1/4 mr-3">
+                      Submit
+                      </button>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- content-wrapper ends -->
+        </div>
+        <!-- row ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>

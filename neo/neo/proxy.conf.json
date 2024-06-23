@@ -1,0 +1,13 @@
+{
+  "/api": {
+    "target": "http://127.0.0.1:2000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "headers": {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
+    }
+  }
+}

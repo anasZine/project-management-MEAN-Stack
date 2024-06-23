@@ -1,0 +1,240 @@
+<div class="page-header">
+  <h3 class="page-title"> Toutes les équipes
+  </h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Tables</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Equipes</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body" >
+        <button style="float: right;background-color:#059BCE" class="btn " data-bs-toggle="modal" [attr.data-bs-target]="'#addModal'">
+          <i class="fa-solid fa-users"></i>Ajouter Equipe</button>
+
+        <h4 class="card-title">Tableau des équipes
+        </h4>
+
+        <div class="table-responsive">
+          <table class="table ">
+            <thead>
+              <tr>
+                <th style="width: 40%;"> Titre</th>
+
+                <th style="width: 15%;" class="text-center"> mettre Equipe à l'utilisateur </th>
+                <th style="width: 15%;" class="text-center"> Details Equipes </th>
+                <th style="width: 15%;" class="text-center"> Modifier Equipes </th>
+                <th style="width: 15%;" class="text-center"> Supprimer Equipes </th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dataArray; index as i ">
+                <td class="py-1">{{ item.titre }}</td>
+
+                <td class="text-center">
+                  <button class="btn  col-3" style="background-color: #63b3ed;" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#asgModal' + i">
+                    <i class="fa-regular fa-hand-pointer"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-success col-3" data-bs-toggle="modal" [attr.data-bs-target]="'#infoModal'+ i"
+                    (click)="getEquipeDetails(item._id)">
+                    <i class="fa-regular fa-file"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-warning col-3" data-bs-toggle="modal"
+                    [attr.data-bs-target]="'#updateModal'+ i">
+                    <i class="fa-solid fa-marker"></i>
+                  </button>
+                </td>
+                <td class="text-center">
+                  <button class="btn btn-danger col-3" data-bs-toggle="modal" [attr.data-bs-target]="'#deleteModal'+ i">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- asign equipe to user modal -->
+<!-- Asign equipe to user modal -->
+<div *ngFor="let item of dataArray; let i = index" class="modal fade" [id]="'asgModal' + i" tabindex="-1" aria-labelledby="asgModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Assigner une équipe à l'utilisateur</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Assigner une équipe à l'utilisateur</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <!-- Ajoutez une référence locale au formulaire avec #assignEquipeForm -->
+            <form #assignEquipeForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Identifiant de l'utilisateur</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]="userId" name="userId" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Identifiant de l'équipe</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]="item._id" name="equipeId" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <!-- Utilisez assignEquipeForm comme argument dans la fonction assignEquipeToUser -->
+        <button type="button" class="btn btn-info" (click)="assignEquipeToUser(assignEquipeForm, userId, item._id, i)">Assigner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Modals for each equipe -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'infoModal' + i" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel">Informations</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Informations Equipe</p>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Nom D'equipe</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" [value]="equipeInfo?.titre" aria-label="readonly input example"
+                readonly>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- update equipe modal -->
+<!-- update equipe modal -->
+<div *ngFor="let item of dataArray; let i = index" class="modal fade" [id]="'updateModal' + i" tabindex="-1"
+  aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Informations</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Equipe Informations</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <!-- Ajoutez une référence locale au formulaire avec #modifierEquipeForm -->
+            <form #modifierEquipeForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Nom D'equipe</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="item.titre" name="titre" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <!-- Utilisez modifierEquipeForm comme argument dans modifierEquipe -->
+        <button type="button" class="btn btn-info"
+          (click)="modifierEquipe(modifierEquipeForm, item._id, i)">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Delete Modals for each equipe -->
+<div *ngFor="let item of dataArray; index as i">
+  <div class="modal fade" [id]="'deleteModal' + i" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Confirmation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Êtes-vous sûr de vouloir supprimer cet equipe ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" (click)="deleteEquipe(item._id, i)">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- add equipe modal -->
+<!-- add equipe modal -->
+<!-- add equipe modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addModalLabel">Ajouter Equipe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Equipe Informations</p>
+        <div class="mb-3 row">
+          <div class="col-sm-10">
+            <!-- Add a local reference to the form with #addEquipeForm -->
+            <form #addEquipeForm="ngForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon3">Nom D'equipe</span>
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"
+                  [(ngModel)]="newEquipe" name="titre" required>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <!-- Use addEquipeForm as an argument in addEquipe method -->
+        <button type="button" class="btn btn-info" (click)="addEquipe(addEquipeForm)">Ajouter</button>
+      </div>
+    </div>
+  </div>
+</div>

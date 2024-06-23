@@ -1,0 +1,87 @@
+.table-bordered > :not(caption) > * {
+  border-width: 1px 0; }
+  .table-bordered > :not(caption) > * > * {
+    border-width: 0 1px; }
+
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch; }
+
+    @media (max-width: 575.98px) {
+      .table-responsive-sm {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; } }
+
+    @media (max-width: 767.98px) {
+      .table-responsive-md {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; } }
+
+    @media (max-width: 991.98px) {
+      .table-responsive-lg {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; } }
+
+    @media (max-width: 1199.98px) {
+      .table-responsive-xl {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; } }
+
+    @media (max-width: 1399.98px) {
+      .table-responsive-xxl {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; } }
+
+
+        .table{
+         color: #6C7293;
+         background-color: rgba(0, 0, 0, 0.05);
+        }
+        .card{
+         background-color: #212529;
+
+        }
+
+/* projets.component.scss */
+
+.card-title-custom1 {
+  background-color: #FF6347;
+  color: white;
+  border-radius: 10px;
+}
+.card-title-custom2 {
+  background-color: #20B2AA;
+  color: white;
+  border-radius: 10px;
+}
+.card-title-custom3 {
+  background-color: #FFD700;
+  color: white;
+  border-radius: 10px;
+}
+.card-title-custom4 {
+  background-color: #4682B4;
+  color: white;
+  border-radius: 10px;
+}
+.card-title-custom5 {
+  background-color: #32CD32;
+  color: white;
+  border-radius: 10px;
+}
+
+.modal-fulll {
+  min-width: 100%;
+  margin: 0;
+}
+.modal-fulll .modal-dialog {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+.modal-fulll .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
